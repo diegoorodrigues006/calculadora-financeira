@@ -1,27 +1,83 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // --- DARK MODE THEME (Com novo Switch Animado) ---
+  // --- TEMA E DARK MODE ---
   const themeCheckbox = document.getElementById('themeToggleCheckbox');
-  
-  // Verifica qual tema foi salvo anteriormente
   if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-mode');
-    themeCheckbox.checked = false; // Desmarcado = Noite/Lua
+    themeCheckbox.checked = false;
   } else {
-    themeCheckbox.checked = true; // Marcado = Dia/Sol
+    themeCheckbox.checked = true;
   }
-  
-  // Alterna o tema ao clicar no interruptor
   themeCheckbox.addEventListener('change', (e) => {
     if (e.target.checked) {
-      // Ativou (Dia)
       document.body.classList.remove('dark-mode');
       localStorage.setItem('theme', 'light');
     } else {
-      // Desativou (Noite)
       document.body.classList.add('dark-mode');
       localStorage.setItem('theme', 'dark');
     }
+  });
+
+  // --- HISTÓRICO (LOCAL STORAGE) ---
+  let historico = JSON.parse(localStorage.getItem('calc_historico')) || [];
+
+  function renderizarHistorico() {
+    const lista = document.getElementById('listaHistorico');
+    lista.innerHTML = '';
+    if (historico.length === 0) {
+      lista.innerHTML = '<p class="hint">Nenhum cálculo recente.</p>';
+      return;
+    }
+    historico.forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'historico-item';
+      li.innerHTML = `
+        <div class="historico-titulo">${item.tipo}</div>
+        <div class="historico-data">${item.data}</div>
+        <div class="historico-valor">${item.resumo}</div>
+      `;
+      lista.appendChild(li);
+    });
+  }
+
+  function adicionarHistorico(tipo, resumo) {
+    const data = new Date().toLocaleString('pt-BR');
+    historico.unshift({ tipo, resumo, data });
+    if (historico.length > 5) historico.pop(); // Mantém apenas os 5 últimos
+    localStorage.setItem('calc_historico', JSON.stringify(historico));
+    renderizarHistorico();
+  }
+
+  document.getElementById('btnLimparHistorico').addEventListener('click', () => {
+    historico = [];
+    localStorage.removeItem('calc_historico');
+    renderizarHistorico();
+  });
+
+  renderizarHistorico(); // Chama ao carregar a página
+
+  // --- GERAÇÃO DE PDF ---
+  document.querySelectorAll('.btn-pdf').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const resultadoDiv = e.target.closest('.resultado');
+      const btnElement = e.target;
+      
+      // Esconde o botão para que não apareça impresso no PDF
+      btnElement.style.display = 'none'; 
+      
+      const opt = {
+        margin:       10,
+        filename:     'relatorio-calculo.pdf',
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  { scale: 2 },
+        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      html2pdf().set(opt).from(resultadoDiv).save().then(() => {
+        // Mostra o botão novamente após salvar
+        btnElement.style.display = 'block'; 
+      });
+    });
   });
 
   // --- CONTROLE DAS ABAS ---
@@ -39,14 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- MÁSCARA DE MOEDA (R$) ---
-  const inputsMoeda = document.querySelectorAll('.mascara-moeda');
-  inputsMoeda.forEach(input => {
+  document.querySelectorAll('.mascara-moeda').forEach(input => {
     input.addEventListener('input', (e) => {
       let valor = e.target.value.replace(/\D/g, "");
-      if (valor === "") {
-        e.target.value = "";
-        return;
-      }
+      if (valor === "") { e.target.value = ""; return; }
       valor = (valor / 100).toFixed(2) + ""; 
       valor = valor.replace(".", ",");
       valor = valor.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
@@ -57,7 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
   function lerValor(id) {
     const input = document.getElementById(id);
     if (!input.value) return 0;
-    
     if (input.classList.contains('mascara-moeda')) {
       let numStr = input.value.replace('R$ ', '').replaceAll('.', '').replace(',', '.');
       return parseFloat(numStr) || 0;
@@ -65,15 +116,14 @@ document.addEventListener('DOMContentLoaded', () => {
     return parseFloat(input.value) || 0;
   }
 
-  // --- BOTÕES DE LIMPAR (RESET) ---
+  // --- BOTÃO LIMPAR CAMPOS ---
   document.querySelectorAll('.btn-limpar').forEach(btn => {
     btn.addEventListener('click', (e) => {
+      if(e.target.id === 'btnLimparHistorico') return; // Ignora o botão do histórico
       const abaAtual = e.target.closest('.tab-content');
       abaAtual.querySelectorAll('input').forEach(input => input.value = '');
-      
       const resDiv = abaAtual.querySelector('.resultado');
       if(resDiv) resDiv.style.display = 'none';
-      
       const canvas = abaAtual.querySelector('canvas');
       if (canvas && graficos[canvas.id]) {
         graficos[canvas.id].destroy();
@@ -120,9 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const taxaMensal = Math.pow(1 + (taxaAnual / 100), 1 / 12) - 1;
     let totalInvestido = valorInicial;
     let saldo = valorInicial;
-    let labelsAnos = [];
-    let dadosInvestido = [];
-    let dadosJuros = [];
+    let labelsAnos = []; let dadosInvestido = []; let dadosJuros = [];
 
     for (let m = 1; m <= meses; m++) {
       saldo = saldo * (1 + taxaMensal) + aporteMensal;
@@ -136,13 +184,10 @@ document.addEventListener('DOMContentLoaded', () => {
     return { saldo, totalInvestido, totalJuros: saldo - totalInvestido, labelsAnos, dadosInvestido, dadosJuros };
   }
 
-  // --- EVENTOS DOS BOTÕES DE CALCULAR ---
+  // --- CÁLCULOS ---
   document.getElementById('btnCalcularJuros').addEventListener('click', () => {
-    const P = lerValor('valorInicial');
-    const PMT = lerValor('aporteMensal');
-    const taxaAno = lerValor('taxaJuros');
-    const anos = lerValor('periodoAnos');
-
+    const P = lerValor('valorInicial'); const PMT = lerValor('aporteMensal');
+    const taxaAno = lerValor('taxaJuros'); const anos = lerValor('periodoAnos');
     if (taxaAno <= 0 || anos <= 0) { alert("Preencha taxas e períodos válidos."); return; }
 
     const { saldo, totalInvestido, totalJuros, labelsAnos, dadosInvestido, dadosJuros } = calcularRendimento(P, PMT, taxaAno, anos);
@@ -155,13 +200,11 @@ document.addEventListener('DOMContentLoaded', () => {
       <p><strong>Total em Juros Ganho:</strong> ${formatarMoeda(totalJuros)}</p>
     `;
     gerarGrafico('graficoJuros', labelsAnos, dadosInvestido, dadosJuros);
+    adicionarHistorico('Juros Compostos', `Saldo: ${formatarMoeda(saldo)}`);
   });
 
   document.getElementById('btnCalcularFinanciamento').addEventListener('click', () => {
-    const valor = lerValor('valorEmprestimo');
-    const taxaMensal = lerValor('taxaFinanciamento');
-    const n = lerValor('numeroParcelas');
-
+    const valor = lerValor('valorEmprestimo'); const taxaMensal = lerValor('taxaFinanciamento'); const n = lerValor('numeroParcelas');
     if (valor <= 0 || taxaMensal <= 0 || n <= 0) { alert("Preencha corretamente."); return; }
 
     const i = taxaMensal / 100;
@@ -175,29 +218,20 @@ document.addEventListener('DOMContentLoaded', () => {
       <p><strong>Total Pago ao Final:</strong> ${formatarMoeda(totalPago)}</p>
       <p><strong>Total de Juros do Financiamento:</strong> ${formatarMoeda(totalPago - valor)}</p>
     `;
+    adicionarHistorico('Financiamento', `Parcela: ${formatarMoeda(parcela)}`);
   });
 
   document.getElementById('btnCalcularSelic').addEventListener('click', () => {
-    const P = lerValor('valorInicialSelic');
-    const PMT = lerValor('aporteMensalSelic');
-    const taxaSelic = lerValor('taxaSelic');
-    const ipca = lerValor('ipcaSelic');
-    const anos = lerValor('periodoAnosSelic');
-
+    const P = lerValor('valorInicialSelic'); const PMT = lerValor('aporteMensalSelic');
+    const taxaSelic = lerValor('taxaSelic'); const ipca = lerValor('ipcaSelic'); const anos = lerValor('periodoAnosSelic');
     if (taxaSelic <= 0 || anos <= 0) { alert("Preencha a taxa e o período válidos."); return; }
 
     const meses = anos * 12;
     const { saldo, totalInvestido, totalJuros, labelsAnos, dadosInvestido, dadosJuros } = calcularRendimento(P, PMT, taxaSelic, anos);
-    
-    const aliquotaIR = obterAliquotaIR(meses);
-    const valorIR = totalJuros * aliquotaIR;
-    const saldoLiquido = saldo - valorIR;
+    const aliquotaIR = obterAliquotaIR(meses); const valorIR = totalJuros * aliquotaIR; const saldoLiquido = saldo - valorIR;
 
     let infoIPCA = '';
-    if (ipca > 0) {
-      const poderDeCompra = saldoLiquido / Math.pow(1 + (ipca / 100), anos);
-      infoIPCA = `<br><p style="color: #c0392b;"><strong>Poder de Compra Real (Líquido - Inflação):</strong> ${formatarMoeda(poderDeCompra)}</p>`;
-    }
+    if (ipca > 0) infoIPCA = `<br><p style="color: #c0392b;"><strong>Poder de Compra Real:</strong> ${formatarMoeda(saldoLiquido / Math.pow(1 + (ipca / 100), anos))}</p>`;
     
     const resDiv = document.getElementById('resultadoSelic');
     resDiv.style.display = 'block';
@@ -209,31 +243,21 @@ document.addEventListener('DOMContentLoaded', () => {
       ${infoIPCA}
     `;
     gerarGrafico('graficoSelic', labelsAnos, dadosInvestido, dadosJuros);
+    adicionarHistorico('Tesouro Selic', `Líquido: ${formatarMoeda(saldoLiquido)}`);
   });
 
   document.getElementById('btnCalcularCDI').addEventListener('click', () => {
-    const P = lerValor('valorInicialCDI');
-    const PMT = lerValor('aporteMensalCDI');
-    const taxaCDI = lerValor('taxaCDI');
-    const percentualCDI = lerValor('percentualCDI');
-    const ipca = lerValor('ipcaCDI');
-    const anos = lerValor('periodoAnosCDI');
-
+    const P = lerValor('valorInicialCDI'); const PMT = lerValor('aporteMensalCDI');
+    const taxaCDI = lerValor('taxaCDI'); const percentualCDI = lerValor('percentualCDI');
+    const ipca = lerValor('ipcaCDI'); const anos = lerValor('periodoAnosCDI');
     if (taxaCDI <= 0 || percentualCDI <= 0 || anos <= 0) { alert("Preencha as taxas e o período válidos."); return; }
 
-    const meses = anos * 12;
-    const taxaEfetivaAno = taxaCDI * (percentualCDI / 100);
+    const meses = anos * 12; const taxaEfetivaAno = taxaCDI * (percentualCDI / 100);
     const { saldo, totalInvestido, totalJuros, labelsAnos, dadosInvestido, dadosJuros } = calcularRendimento(P, PMT, taxaEfetivaAno, anos);
-    
-    const aliquotaIR = obterAliquotaIR(meses);
-    const valorIR = totalJuros * aliquotaIR;
-    const saldoLiquido = saldo - valorIR;
+    const aliquotaIR = obterAliquotaIR(meses); const valorIR = totalJuros * aliquotaIR; const saldoLiquido = saldo - valorIR;
 
     let infoIPCA = '';
-    if (ipca > 0) {
-      const poderDeCompra = saldoLiquido / Math.pow(1 + (ipca / 100), anos);
-      infoIPCA = `<br><p style="color: #c0392b;"><strong>Poder de Compra Real (Líquido - Inflação):</strong> ${formatarMoeda(poderDeCompra)}</p>`;
-    }
+    if (ipca > 0) infoIPCA = `<br><p style="color: #c0392b;"><strong>Poder de Compra Real:</strong> ${formatarMoeda(saldoLiquido / Math.pow(1 + (ipca / 100), anos))}</p>`;
     
     const resDiv = document.getElementById('resultadoCDI');
     resDiv.style.display = 'block';
@@ -246,6 +270,6 @@ document.addEventListener('DOMContentLoaded', () => {
       ${infoIPCA}
     `;
     gerarGrafico('graficoCDI', labelsAnos, dadosInvestido, dadosJuros);
+    adicionarHistorico('Rendimento CDI', `Líquido: ${formatarMoeda(saldoLiquido)}`);
   });
-
 });
