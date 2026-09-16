@@ -1,39 +1,146 @@
+/* Definição de Variáveis de Cores (Tema Claro) */
+:root {
+  --bg-body: #f4f7f6;
+  --bg-container: #ffffff;
+  --text-main: #2c3e50;
+  --text-secondary: #34495e;
+  --text-muted: #7f8c8d;
+  --border-color: #ccc;
+  --border-tabs: #e0e0e0;
+  --primary: #27ae60;
+  --primary-hover: #219150;
+  --result-bg: #eef9f2;
+}
+
+/* Tema Escuro */
+body.dark-mode {
+  --bg-body: #121212;
+  --bg-container: #1e1e1e;
+  --text-main: #f1f1f1;
+  --text-secondary: #dcdcdc;
+  --text-muted: #a0a0a0;
+  --border-color: #444;
+  --border-tabs: #333;
+  --primary: #2ecc71;
+  --primary-hover: #27ae60;
+  --result-bg: #2a3b2e;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 body {
-  background-color: #f4f7f6;
+  background-color: var(--bg-body);
+  color: var(--text-main);
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   min-height: 100vh;
   padding: 20px;
 }
 
 .container {
-  background: #ffffff;
+  background: var(--bg-container);
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 500px;
+  margin-top: 20px;
+}
+
+.header-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #2c3e50;
-  font-size: 1.8rem;
+  color: var(--text-main);
+  font-size: 1.6rem;
 }
+
+/* ========================================= */
+/* CSS DO INTERRUPTOR (UIVERSE)              */
+/* ========================================= */
+.switch {
+  font-size: 14px; /* Diminuí um pouco para encaixar melhor no cabeçalho */
+  position: relative;
+  display: inline-block;
+  width: 4em;
+  height: 2.2em;
+  border-radius: 30px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2a2a2a;
+  transition: 0.4s;
+  border-radius: 30px;
+  overflow: hidden;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 1.2em;
+  width: 1.2em;
+  border-radius: 20px;
+  left: 0.5em;
+  bottom: 0.5em;
+  transition: 0.4s;
+  transition-timing-function: cubic-bezier(0.81, -0.04, 0.38, 1.5);
+  box-shadow: inset 8px -4px 0px 0px #fff;
+}
+.switch input:checked + .slider {
+  background-color: #00a6ff;
+}
+.switch input:checked + .slider:before {
+  transform: translateX(1.8em);
+  box-shadow: inset 15px -4px 0px 15px #ffcf48;
+}
+.star {
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  width: 5px;
+  transition: all 0.4s;
+  height: 5px;
+}
+.star_1 { left: 2.5em; top: 0.5em; }
+.star_2 { left: 2.2em; top: 1.2em; }
+.star_3 { left: 3em; top: 0.9em; }
+.switch input:checked ~ .slider .star { opacity: 0; }
+.cloud {
+  width: 3.5em;
+  position: absolute;
+  bottom: -1.4em;
+  left: -1.1em;
+  opacity: 0;
+  transition: all 0.4s;
+}
+.switch input:checked ~ .slider .cloud { opacity: 1; }
+/* ========================================= */
 
 h2 {
   font-size: 1.2rem;
   margin-bottom: 15px;
-  color: #34495e;
+  color: var(--text-secondary);
 }
 
 .tabs {
@@ -41,7 +148,7 @@ h2 {
   flex-wrap: wrap;
   gap: 5px;
   margin-bottom: 20px;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid var(--border-tabs);
   padding-bottom: 5px;
 }
 
@@ -52,33 +159,24 @@ h2 {
   background: none;
   font-size: 14px;
   font-weight: bold;
-  color: #7f8c8d;
+  color: var(--text-muted);
   cursor: pointer;
-  transition: 0.3s;
-  text-align: center;
 }
 
 .tab-btn.active {
-  color: #27ae60;
-  border-bottom: 3px solid #27ae60;
+  color: var(--primary);
+  border-bottom: 3px solid var(--primary);
 }
 
-.tab-content {
-  display: none;
-}
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 
-.tab-content.active {
-  display: block;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
+.form-group { margin-bottom: 15px; }
 
 label {
   display: block;
   margin-bottom: 5px;
-  color: #34495e;
+  color: var(--text-secondary);
   font-weight: 600;
   font-size: 0.9rem;
 }
@@ -86,58 +184,70 @@ label {
 input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
+  background-color: transparent;
+  color: var(--text-main);
   border-radius: 6px;
   font-size: 15px;
 }
 
-/* Nova classe para as descrições de ajuda */
 .hint {
   display: block;
   font-size: 0.78rem;
-  color: #95a5a6;
+  color: var(--text-muted);
   margin-top: 4px;
   font-style: italic;
 }
 
-button {
-  width: 100%;
+.botoes-acao {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+button.btn-primario, button.btn-limpar {
   padding: 12px;
-  background-color: #27ae60;
-  color: white;
   border: none;
   border-radius: 6px;
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 10px;
   transition: background 0.3s;
 }
 
-button:hover {
-  background-color: #219150;
+button.btn-primario {
+  flex: 2;
+  background-color: var(--primary);
+  color: white;
 }
+button.btn-primario:hover { background-color: var(--primary-hover); }
+
+button.btn-limpar {
+  flex: 1;
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-muted);
+}
+button.btn-limpar:hover { background-color: var(--border-tabs); }
 
 .resultado {
   margin-top: 20px;
   padding: 15px;
-  background-color: #eef9f2;
-  border-left: 5px solid #27ae60;
+  background-color: var(--result-bg);
+  border-left: 5px solid var(--primary);
   border-radius: 4px;
   display: none;
 }
 
 .resultado p {
   margin-bottom: 8px;
-  color: #2c3e50;
+  color: var(--text-main);
   font-size: 0.95rem;
 }
 
-/* Configurações do Gráfico */
 .grafico {
   margin-top: 20px;
-  background-color: #ffffff;
+  background-color: var(--bg-container);
   padding: 10px;
   border-radius: 6px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
 }

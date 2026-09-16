@@ -9,7 +9,22 @@
 </head>
 <body>
   <div class="container">
-    <h1>Calculadora Financeira</h1>
+    <div class="header-topo">
+      <h1>Calculadora Financeira</h1>
+      
+      <!-- Novo Botão Tema Animado (Uiverse) -->
+      <label class="switch">
+        <input id="themeToggleCheckbox" type="checkbox" checked />
+        <span class="slider">
+          <div class="star star_1"></div>
+          <div class="star star_2"></div>
+          <div class="star star_3"></div>
+          <svg viewBox="0 0 16 16" class="cloud_1 cloud">
+            <path transform="matrix(.77976 0 0 .78395-299.99-418.63)" fill="#fff" d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925"></path>
+          </svg>
+        </span>
+      </label>
+    </div>
 
     <div class="tabs">
       <button class="tab-btn active" data-tab="juros">Juros</button>
@@ -23,12 +38,12 @@
       <h2>Simulador de Investimentos Gerais</h2>
       <div class="form-group">
         <label for="valorInicial">Valor Inicial (R$):</label>
-        <input type="number" id="valorInicial" placeholder="Ex: 1000">
+        <input type="text" inputmode="numeric" id="valorInicial" class="mascara-moeda" placeholder="R$ 0,00">
         <span class="hint">O montante que você já tem para começar.</span>
       </div>
       <div class="form-group">
         <label for="aporteMensal">Aporte Mensal (R$):</label>
-        <input type="number" id="aporteMensal" placeholder="Ex: 200">
+        <input type="text" inputmode="numeric" id="aporteMensal" class="mascara-moeda" placeholder="R$ 0,00">
         <span class="hint">Valor que você planeja investir todos os meses.</span>
       </div>
       <div class="form-group">
@@ -38,10 +53,11 @@
       <div class="form-group">
         <label for="periodoAnos">Período (em anos):</label>
         <input type="number" id="periodoAnos" placeholder="Ex: 5">
-        <span class="hint">Tempo que o dinheiro ficará rendendo.</span>
       </div>
-      <button id="btnCalcularJuros">Calcular Rendimento</button>
-      
+      <div class="botoes-acao">
+        <button id="btnCalcularJuros" class="btn-primario">Calcular</button>
+        <button class="btn-limpar">Limpar</button>
+      </div>
       <div id="resultadoJuros" class="resultado">
         <div class="textos-resultado"></div>
         <canvas id="graficoJuros" class="grafico"></canvas>
@@ -53,19 +69,20 @@
       <h2>Simulação de Financiamento</h2>
       <div class="form-group">
         <label for="valorEmprestimo">Valor do Empréstimo (R$):</label>
-        <input type="number" id="valorEmprestimo" placeholder="Ex: 10000">
+        <input type="text" inputmode="numeric" id="valorEmprestimo" class="mascara-moeda" placeholder="R$ 0,00">
       </div>
       <div class="form-group">
         <label for="taxaFinanciamento">Taxa de Juros Ao Mês (%):</label>
         <input type="number" id="taxaFinanciamento" placeholder="Ex: 1.5" step="0.1">
-        <span class="hint">Atenção: A taxa informada pelos bancos geralmente é ao mês.</span>
       </div>
       <div class="form-group">
         <label for="numeroParcelas">Quantidade de Parcelas (Meses):</label>
         <input type="number" id="numeroParcelas" placeholder="Ex: 24">
       </div>
-      <button id="btnCalcularFinanciamento">Calcular Parcelas</button>
-      
+      <div class="botoes-acao">
+        <button id="btnCalcularFinanciamento" class="btn-primario">Calcular</button>
+        <button class="btn-limpar">Limpar</button>
+      </div>
       <div id="resultadoFinanciamento" class="resultado">
         <div class="textos-resultado"></div>
       </div>
@@ -76,11 +93,11 @@
       <h2>Investimento Tesouro Selic</h2>
       <div class="form-group">
         <label for="valorInicialSelic">Valor Inicial (R$):</label>
-        <input type="number" id="valorInicialSelic" placeholder="Ex: 1000">
+        <input type="text" inputmode="numeric" id="valorInicialSelic" class="mascara-moeda" placeholder="R$ 0,00">
       </div>
       <div class="form-group">
         <label for="aporteMensalSelic">Aporte Mensal (R$):</label>
-        <input type="number" id="aporteMensalSelic" placeholder="Ex: 200">
+        <input type="text" inputmode="numeric" id="aporteMensalSelic" class="mascara-moeda" placeholder="R$ 0,00">
       </div>
       <div class="form-group">
         <label for="taxaSelic">Taxa Selic Atual (% ao ano):</label>
@@ -89,14 +106,15 @@
       <div class="form-group">
         <label for="ipcaSelic">Inflação Anual / IPCA (%) - Opcional:</label>
         <input type="number" id="ipcaSelic" placeholder="Ex: 4.5" step="0.1">
-        <span class="hint">Para descobrir o poder de compra real do seu dinheiro.</span>
       </div>
       <div class="form-group">
         <label for="periodoAnosSelic">Período (em anos):</label>
         <input type="number" id="periodoAnosSelic" placeholder="Ex: 5">
       </div>
-      <button id="btnCalcularSelic">Calcular Tesouro Selic</button>
-      
+      <div class="botoes-acao">
+        <button id="btnCalcularSelic" class="btn-primario">Calcular</button>
+        <button class="btn-limpar">Limpar</button>
+      </div>
       <div id="resultadoSelic" class="resultado">
         <div class="textos-resultado"></div>
         <canvas id="graficoSelic" class="grafico"></canvas>
@@ -108,11 +126,11 @@
       <h2>Investimentos atrelados ao CDI (CDB, LCI)</h2>
       <div class="form-group">
         <label for="valorInicialCDI">Valor Inicial (R$):</label>
-        <input type="number" id="valorInicialCDI" placeholder="Ex: 1000">
+        <input type="text" inputmode="numeric" id="valorInicialCDI" class="mascara-moeda" placeholder="R$ 0,00">
       </div>
       <div class="form-group">
         <label for="aporteMensalCDI">Aporte Mensal (R$):</label>
-        <input type="number" id="aporteMensalCDI" placeholder="Ex: 200">
+        <input type="text" inputmode="numeric" id="aporteMensalCDI" class="mascara-moeda" placeholder="R$ 0,00">
       </div>
       <div class="form-group">
         <label for="taxaCDI">Taxa CDI Atual (% ao ano):</label>
@@ -130,16 +148,16 @@
         <label for="periodoAnosCDI">Período (em anos):</label>
         <input type="number" id="periodoAnosCDI" placeholder="Ex: 5">
       </div>
-      <button id="btnCalcularCDI">Calcular Rendimento CDI</button>
-      
+      <div class="botoes-acao">
+        <button id="btnCalcularCDI" class="btn-primario">Calcular</button>
+        <button class="btn-limpar">Limpar</button>
+      </div>
       <div id="resultadoCDI" class="resultado">
         <div class="textos-resultado"></div>
         <canvas id="graficoCDI" class="grafico"></canvas>
       </div>
     </div>
-
   </div>
-
   <script src="src/js/script.js"></script>
 </body>
 </html>
