@@ -42,13 +42,12 @@ body {
   padding: 20px;
 }
 
-/* Novo Layout com Grid/Flex para a Sidebar */
 .main-wrapper {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
   width: 100%;
-  max-width: 900px;
+  max-width: 950px;
   justify-content: center;
   align-items: flex-start;
 }
@@ -99,7 +98,7 @@ body {
   font-size: 0.9rem;
 }
 
-/* Header */
+/* Header & Toggle */
 .header-topo {
   display: flex;
   justify-content: space-between;
@@ -109,7 +108,6 @@ body {
 h1 { color: var(--text-main); font-size: 1.6rem; }
 h2 { font-size: 1.2rem; margin-bottom: 15px; color: var(--text-secondary); }
 
-/* Switch (Uiverse) */
 .switch { font-size: 14px; position: relative; display: inline-block; width: 4em; height: 2.2em; border-radius: 30px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
 .switch input { opacity: 0; width: 0; height: 0; }
 .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #2a2a2a; transition: 0.4s; border-radius: 30px; overflow: hidden; }
@@ -124,7 +122,7 @@ h2 { font-size: 1.2rem; margin-bottom: 15px; color: var(--text-secondary); }
 .cloud { width: 3.5em; position: absolute; bottom: -1.4em; left: -1.1em; opacity: 0; transition: all 0.4s; }
 .switch input:checked ~ .slider .cloud { opacity: 1; }
 
-/* Tabs & Inputs */
+/* Tabs & Formulários */
 .tabs { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid var(--border-tabs); padding-bottom: 5px; }
 .tab-btn { flex: 1 1 calc(25% - 5px); padding: 10px 5px; border: none; background: none; font-size: 14px; font-weight: bold; color: var(--text-muted); cursor: pointer; }
 .tab-btn.active { color: var(--primary); border-bottom: 3px solid var(--primary); }
@@ -135,7 +133,7 @@ label { display: block; margin-bottom: 5px; color: var(--text-secondary); font-w
 input { width: 100%; padding: 10px; border: 1px solid var(--border-color); background-color: transparent; color: var(--text-main); border-radius: 6px; font-size: 15px; }
 .hint { display: block; font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; font-style: italic; }
 
-/* Botões */
+/* Botões de Ação */
 .botoes-acao { display: flex; gap: 10px; margin-top: 15px; }
 button { padding: 12px; border: none; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
 button.btn-primario { flex: 2; background-color: var(--primary); color: white; }
@@ -145,7 +143,24 @@ button.btn-limpar:hover { background-color: var(--border-tabs); }
 button.btn-pdf { background-color: #e74c3c; color: white; width: 100%; margin-top: 15px; }
 button.btn-pdf:hover { background-color: #c0392b; }
 
-/* Resultados & Graficos */
+/* Resultados & Gráficos */
 .resultado { margin-top: 20px; padding: 15px; background-color: var(--result-bg); border-left: 5px solid var(--primary); border-radius: 4px; display: none; }
 .resultado p { margin-bottom: 8px; color: var(--text-main); font-size: 0.95rem; }
 .grafico { margin-top: 20px; background-color: var(--bg-container); padding: 10px; border-radius: 6px; }
+
+/* Calculadora Aritmética Comum */
+.calc-comum { margin-top: 15px; }
+.calc-display {
+  width: 100%; height: 45px; background-color: var(--bg-body); color: var(--text-main);
+  border: 1px solid var(--border-color); border-radius: 6px; text-align: right; padding: 0 10px; font-size: 1.2rem; margin-bottom: 10px; pointer-events: none;
+}
+.calc-botoes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+.calc-btn {
+  padding: 10px 0; font-size: 1rem; font-weight: bold; background-color: var(--bg-body); color: var(--text-main);
+  border: 1px solid var(--border-color); border-radius: 6px; cursor: pointer; transition: background 0.2s;
+}
+.calc-btn:hover { background-color: var(--border-tabs); }
+.calc-btn.btn-op, .calc-btn.btn-acao { background-color: var(--border-tabs); }
+.calc-btn.btn-igual { background-color: var(--primary); color: white; grid-row: span 2; height: auto; }
+.calc-btn.btn-igual:hover { background-color: var(--primary-hover); }
+.calc-btn.btn-zero { grid-column: span 2; }

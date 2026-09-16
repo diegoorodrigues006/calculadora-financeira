@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     themeCheckbox.checked = true;
   }
+  
   themeCheckbox.addEventListener('change', (e) => {
     if (e.target.checked) {
       document.body.classList.remove('dark-mode');
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function adicionarHistorico(tipo, resumo) {
     const data = new Date().toLocaleString('pt-BR');
     historico.unshift({ tipo, resumo, data });
-    if (historico.length > 5) historico.pop(); // Mantém apenas os 5 últimos
+    if (historico.length > 5) historico.pop();
     localStorage.setItem('calc_historico', JSON.stringify(historico));
     renderizarHistorico();
   }
@@ -54,27 +55,24 @@ document.addEventListener('DOMContentLoaded', () => {
     renderizarHistorico();
   });
 
-  renderizarHistorico(); // Chama ao carregar a página
+  renderizarHistorico();
 
   // --- GERAÇÃO DE PDF ---
   document.querySelectorAll('.btn-pdf').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const resultadoDiv = e.target.closest('.resultado');
       const btnElement = e.target;
-      
-      // Esconde o botão para que não apareça impresso no PDF
       btnElement.style.display = 'none'; 
       
       const opt = {
-        margin:       10,
-        filename:     'relatorio-calculo.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2 },
-        jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        margin: 10,
+        filename: 'relatorio-calculo.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
       };
 
       html2pdf().set(opt).from(resultadoDiv).save().then(() => {
-        // Mostra o botão novamente após salvar
         btnElement.style.display = 'block'; 
       });
     });
@@ -119,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- BOTÃO LIMPAR CAMPOS ---
   document.querySelectorAll('.btn-limpar').forEach(btn => {
     btn.addEventListener('click', (e) => {
-      if(e.target.id === 'btnLimparHistorico') return; // Ignora o botão do histórico
+      if(e.target.id === 'btnLimparHistorico') return;
       const abaAtual = e.target.closest('.tab-content');
       abaAtual.querySelectorAll('input').forEach(input => input.value = '');
       const resDiv = abaAtual.querySelector('.resultado');
@@ -184,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return { saldo, totalInvestido, totalJuros: saldo - totalInvestido, labelsAnos, dadosInvestido, dadosJuros };
   }
 
-  // --- CÁLCULOS ---
+  // --- CÁLCULO 1: JUROS GERAIS ---
   document.getElementById('btnCalcularJuros').addEventListener('click', () => {
     const P = lerValor('valorInicial'); const PMT = lerValor('aporteMensal');
     const taxaAno = lerValor('taxaJuros'); const anos = lerValor('periodoAnos');
@@ -203,6 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     adicionarHistorico('Juros Compostos', `Saldo: ${formatarMoeda(saldo)}`);
   });
 
+  // --- CÁLCULO 2: FINANCIAMENTO ---
   document.getElementById('btnCalcularFinanciamento').addEventListener('click', () => {
     const valor = lerValor('valorEmprestimo'); const taxaMensal = lerValor('taxaFinanciamento'); const n = lerValor('numeroParcelas');
     if (valor <= 0 || taxaMensal <= 0 || n <= 0) { alert("Preencha corretamente."); return; }
@@ -221,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     adicionarHistorico('Financiamento', `Parcela: ${formatarMoeda(parcela)}`);
   });
 
+  // --- CÁLCULO 3: TESOURO SELIC ---
   document.getElementById('btnCalcularSelic').addEventListener('click', () => {
     const P = lerValor('valorInicialSelic'); const PMT = lerValor('aporteMensalSelic');
     const taxaSelic = lerValor('taxaSelic'); const ipca = lerValor('ipcaSelic'); const anos = lerValor('periodoAnosSelic');
@@ -246,6 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     adicionarHistorico('Tesouro Selic', `Líquido: ${formatarMoeda(saldoLiquido)}`);
   });
 
+  // --- CÁLCULO 4: CDI ---
   document.getElementById('btnCalcularCDI').addEventListener('click', () => {
     const P = lerValor('valorInicialCDI'); const PMT = lerValor('aporteMensalCDI');
     const taxaCDI = lerValor('taxaCDI'); const percentualCDI = lerValor('percentualCDI');
@@ -272,4 +273,60 @@ document.addEventListener('DOMContentLoaded', () => {
     gerarGrafico('graficoCDI', labelsAnos, dadosInvestido, dadosJuros);
     adicionarHistorico('Rendimento CDI', `Líquido: ${formatarMoeda(saldoLiquido)}`);
   });
+
+  // --- CALCULADORA ARITMÉTICA COMUM (SIDEBAR) ---
+  const calcDisplay = document.getElementById('calcDisplay');
+  let calcValue = '0';
+
+  function processarCalculadora(val) {
+    if (val === 'C') {
+      calcValue = '0';
+    } else if (val === 'back') {
+      calcValue = calcValue.length > 1 ? calcValue.slice(0, -1) : '0';
+    } else if (val === '=') {
+      try {
+        let expr = calcValue.replace('×', '*').replace('÷', '/');
+        calcValue = String(eval(expr));
+      } catch (error) {
+        calcValue = 'Erro';
+      }
+    } else {
+      if (calcValue === '0' || calcValue === 'Erro') {
+        calcValue = val;
+      } else {
+        calcValue += val;
+      }
+    }
+    calcDisplay.value = calcValue;
+  }
+
+  // Cliques do Mouse
+  document.querySelectorAll('.calc-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      processarCalculadora(btn.getAttribute('data-val'));
+    });
+  });
+
+  // Entrada pelo Teclado
+  document.addEventListener('keydown', (e) => {
+    // Evita conflito se o usuário estiver digitando nos inputs principais da calculadora financeira
+    if (document.activeElement.tagName === 'INPUT' && document.activeElement.id !== 'calcDisplay') {
+      return;
+    }
+
+    const key = e.key;
+    if ((key >= '0' && key <= '9') || key === '.') {
+      processarCalculadora(key);
+    } else if (key === '+' || key === '-' || key === '*' || key === '/') {
+      processarCalculadora(key);
+    } else if (key === 'Enter' || key === '=') {
+      e.preventDefault();
+      processarCalculadora('=');
+    } else if (key === 'Backspace') {
+      processarCalculadora('back');
+    } else if (key === 'Escape' || key === 'c' || key === 'C') {
+      processarCalculadora('C');
+    }
+  });
+
 });
