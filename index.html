@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora Financeira</title>
+  <link rel="stylesheet" href="src/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Calculadora Financeira</h1>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="juros">Juros</button>
+      <button class="tab-btn" data-tab="parcelas">Empréstimo</button>
+      <button class="tab-btn" data-tab="selic">Selic</button>
+      <button class="tab-btn" data-tab="cdi">CDI</button>
+    </div>
+
+    <!-- SEÇÃO 1: JUROS COMPOSTOS -->
+    <div id="juros" class="tab-content active">
+      <h2>Simulador de Investimentos Gerais</h2>
+      <div class="form-group">
+        <label for="valorInicial">Valor Inicial (R$):</label>
+        <input type="number" id="valorInicial" placeholder="Ex: 1000">
+        <span class="hint">O montante que você já tem para começar.</span>
+      </div>
+      <div class="form-group">
+        <label for="aporteMensal">Aporte Mensal (R$):</label>
+        <input type="number" id="aporteMensal" placeholder="Ex: 200">
+        <span class="hint">Valor que você planeja investir todos os meses.</span>
+      </div>
+      <div class="form-group">
+        <label for="taxaJuros">Taxa de Juros Ao Ano (%):</label>
+        <input type="number" id="taxaJuros" placeholder="Ex: 10" step="0.1">
+      </div>
+      <div class="form-group">
+        <label for="periodoAnos">Período (em anos):</label>
+        <input type="number" id="periodoAnos" placeholder="Ex: 5">
+        <span class="hint">Tempo que o dinheiro ficará rendendo.</span>
+      </div>
+      <button id="btnCalcularJuros">Calcular Rendimento</button>
+      <div id="resultadoJuros" class="resultado"></div>
+    </div>
+
+    <!-- SEÇÃO 2: FINANCIAMENTO -->
+    <div id="parcelas" class="tab-content">
+      <h2>Simulação de Financiamento</h2>
+      <div class="form-group">
+        <label for="valorEmprestimo">Valor do Empréstimo (R$):</label>
+        <input type="number" id="valorEmprestimo" placeholder="Ex: 10000">
+      </div>
+      <div class="form-group">
+        <label for="taxaFinanciamento">Taxa de Juros Ao Mês (%):</label>
+        <input type="number" id="taxaFinanciamento" placeholder="Ex: 1.5" step="0.1">
+        <span class="hint">Atenção: A taxa informada pelos bancos geralmente é ao mês (a.m.).</span>
+      </div>
+      <div class="form-group">
+        <label for="numeroParcelas">Quantidade de Parcelas (Meses):</label>
+        <input type="number" id="numeroParcelas" placeholder="Ex: 24">
+      </div>
+      <button id="btnCalcularFinanciamento">Calcular Parcelas</button>
+      <div id="resultadoFinanciamento" class="resultado"></div>
+    </div>
+
+    <!-- SEÇÃO 3: TESOURO SELIC -->
+    <div id="selic" class="tab-content">
+      <h2>Investimento Tesouro Selic</h2>
+      <div class="form-group">
+        <label for="valorInicialSelic">Valor Inicial (R$):</label>
+        <input type="number" id="valorInicialSelic" placeholder="Ex: 1000">
+      </div>
+      <div class="form-group">
+        <label for="aporteMensalSelic">Aporte Mensal (R$):</label>
+        <input type="number" id="aporteMensalSelic" placeholder="Ex: 200">
+      </div>
+      <div class="form-group">
+        <label for="taxaSelic">Taxa Selic Atual (% ao ano):</label>
+        <input type="number" id="taxaSelic" placeholder="Ex: 10.5" step="0.1">
+        <span class="hint">Consulte a taxa básica de juros atual no site do Banco Central.</span>
+      </div>
+      <div class="form-group">
+        <label for="periodoAnosSelic">Período (em anos):</label>
+        <input type="number" id="periodoAnosSelic" placeholder="Ex: 5">
+      </div>
+      <button id="btnCalcularSelic">Calcular Tesouro Selic</button>
+      <div id="resultadoSelic" class="resultado"></div>
+    </div>
+
+    <!-- SEÇÃO 4: RENDIMENTO CDI -->
+    <div id="cdi" class="tab-content">
+      <h2>Investimentos atrelados ao CDI (CDB, LCI)</h2>
+      <div class="form-group">
+        <label for="valorInicialCDI">Valor Inicial (R$):</label>
+        <input type="number" id="valorInicialCDI" placeholder="Ex: 1000">
+      </div>
+      <div class="form-group">
+        <label for="aporteMensalCDI">Aporte Mensal (R$):</label>
+        <input type="number" id="aporteMensalCDI" placeholder="Ex: 200">
+      </div>
+      <div class="form-group">
+        <label for="taxaCDI">Taxa CDI Atual (% ao ano):</label>
+        <input type="number" id="taxaCDI" placeholder="Ex: 10.4" step="0.1">
+        <span class="hint">A taxa CDI costuma ser 0,10% menor que a taxa Selic.</span>
+      </div>
+      <div class="form-group">
+        <label for="percentualCDI">Percentual do CDI (%):</label>
+        <input type="number" id="percentualCDI" placeholder="Ex: 110">
+        <span class="hint">Ex: Se o seu CDB rende "110% do CDI", digite 110.</span>
+      </div>
+      <div class="form-group">
+        <label for="periodoAnosCDI">Período (em anos):</label>
+        <input type="number" id="periodoAnosCDI" placeholder="Ex: 5">
+      </div>
+      <button id="btnCalcularCDI">Calcular Rendimento CDI</button>
+      <div id="resultadoCDI" class="resultado"></div>
+    </div>
+
+  </div>
+
+  <script src="src/js/script.js"></script>
+</body>
+</html>
