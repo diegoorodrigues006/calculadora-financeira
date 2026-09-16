@@ -1,26 +1,32 @@
 :root {
-  --bg-body: #f4f7f6;
+  /* Imagem para o Modo Claro */
+  --bg-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1920&auto=format&fit=crop');
+  --bg-color-overlay: rgba(244, 247, 246, 0.88);
+
   --bg-container: #ffffff;
   --text-main: #2c3e50;
   --text-secondary: #34495e;
   --text-muted: #7f8c8d;
   --border-color: #ccc;
   --border-tabs: #e0e0e0;
-  --primary: #27ae60;
-  --primary-hover: #219150;
+  --primary: #2761ae;
+  --primary-hover: #143055;
   --result-bg: #eef9f2;
 }
 
 body.dark-mode {
-  --bg-body: #121212;
+  /* Caminho corrigido com '../../' para voltar de src/css/ até a raiz e entrar em public/assets/ */
+  --bg-image: url('../../public/assets/momo.jpg');
+  --bg-color-overlay: rgba(18, 18, 18, 0.80); /* Deixei levemente mais transparente (0.80) para a imagem aparecer bem */
+
   --bg-container: #1e1e1e;
   --text-main: #f1f1f1;
   --text-secondary: #dcdcdc;
   --text-muted: #a0a0a0;
   --border-color: #444;
   --border-tabs: #333;
-  --primary: #2ecc71;
-  --primary-hover: #27ae60;
+  --primary: #2761ae;
+  --primary-hover: #143055;
   --result-bg: #2a3b2e;
 }
 
@@ -33,7 +39,12 @@ body.dark-mode {
 }
 
 body {
-  background-color: var(--bg-body);
+  /* Mistura a cor translúcida com a imagem de fundo de forma válida no CSS */
+  background-image: linear-gradient(var(--bg-color-overlay), var(--bg-color-overlay)), var(--bg-image);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+
   color: var(--text-main);
   display: flex;
   justify-content: center;
@@ -151,8 +162,16 @@ button.btn-pdf:hover { background-color: #c0392b; }
 /* Calculadora Aritmética Comum */
 .calc-comum { margin-top: 15px; }
 .calc-display {
-  width: 100%; height: 45px; background-color: var(--bg-body); color: var(--text-main);
-  border: 1px solid var(--border-color); border-radius: 6px; text-align: right; padding: 0 10px; font-size: 1.2rem; margin-bottom: 10px; pointer-events: none;
+  width: 100%; 
+  height: 45px; 
+  background-color: var(--bg-body); 
+  color: var(--text-main);
+  border: 1px solid var(--border-color); 
+  border-radius: 6px; 
+  text-align: right; 
+  padding: 0 10px; 
+  font-size: 1.2rem; 
+  margin-bottom: 10px;
 }
 .calc-botoes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
 .calc-btn {
@@ -164,3 +183,9 @@ button.btn-pdf:hover { background-color: #c0392b; }
 .calc-btn.btn-igual { background-color: var(--primary); color: white; grid-row: span 2; height: auto; }
 .calc-btn.btn-igual:hover { background-color: var(--primary-hover); }
 .calc-btn.btn-zero { grid-column: span 2; }
+
+input:focus, .calc-display:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+}
