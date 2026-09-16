@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora Financeira</title>
   <link rel="stylesheet" href="src/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
   <div class="container">
@@ -40,7 +41,11 @@
         <span class="hint">Tempo que o dinheiro ficará rendendo.</span>
       </div>
       <button id="btnCalcularJuros">Calcular Rendimento</button>
-      <div id="resultadoJuros" class="resultado"></div>
+      
+      <div id="resultadoJuros" class="resultado">
+        <div class="textos-resultado"></div>
+        <canvas id="graficoJuros" class="grafico"></canvas>
+      </div>
     </div>
 
     <!-- SEÇÃO 2: FINANCIAMENTO -->
@@ -53,14 +58,17 @@
       <div class="form-group">
         <label for="taxaFinanciamento">Taxa de Juros Ao Mês (%):</label>
         <input type="number" id="taxaFinanciamento" placeholder="Ex: 1.5" step="0.1">
-        <span class="hint">Atenção: A taxa informada pelos bancos geralmente é ao mês (a.m.).</span>
+        <span class="hint">Atenção: A taxa informada pelos bancos geralmente é ao mês.</span>
       </div>
       <div class="form-group">
         <label for="numeroParcelas">Quantidade de Parcelas (Meses):</label>
         <input type="number" id="numeroParcelas" placeholder="Ex: 24">
       </div>
       <button id="btnCalcularFinanciamento">Calcular Parcelas</button>
-      <div id="resultadoFinanciamento" class="resultado"></div>
+      
+      <div id="resultadoFinanciamento" class="resultado">
+        <div class="textos-resultado"></div>
+      </div>
     </div>
 
     <!-- SEÇÃO 3: TESOURO SELIC -->
@@ -77,14 +85,22 @@
       <div class="form-group">
         <label for="taxaSelic">Taxa Selic Atual (% ao ano):</label>
         <input type="number" id="taxaSelic" placeholder="Ex: 10.5" step="0.1">
-        <span class="hint">Consulte a taxa básica de juros atual no site do Banco Central.</span>
+      </div>
+      <div class="form-group">
+        <label for="ipcaSelic">Inflação Anual / IPCA (%) - Opcional:</label>
+        <input type="number" id="ipcaSelic" placeholder="Ex: 4.5" step="0.1">
+        <span class="hint">Para descobrir o poder de compra real do seu dinheiro.</span>
       </div>
       <div class="form-group">
         <label for="periodoAnosSelic">Período (em anos):</label>
         <input type="number" id="periodoAnosSelic" placeholder="Ex: 5">
       </div>
       <button id="btnCalcularSelic">Calcular Tesouro Selic</button>
-      <div id="resultadoSelic" class="resultado"></div>
+      
+      <div id="resultadoSelic" class="resultado">
+        <div class="textos-resultado"></div>
+        <canvas id="graficoSelic" class="grafico"></canvas>
+      </div>
     </div>
 
     <!-- SEÇÃO 4: RENDIMENTO CDI -->
@@ -101,19 +117,25 @@
       <div class="form-group">
         <label for="taxaCDI">Taxa CDI Atual (% ao ano):</label>
         <input type="number" id="taxaCDI" placeholder="Ex: 10.4" step="0.1">
-        <span class="hint">A taxa CDI costuma ser 0,10% menor que a taxa Selic.</span>
       </div>
       <div class="form-group">
         <label for="percentualCDI">Percentual do CDI (%):</label>
         <input type="number" id="percentualCDI" placeholder="Ex: 110">
-        <span class="hint">Ex: Se o seu CDB rende "110% do CDI", digite 110.</span>
+      </div>
+      <div class="form-group">
+        <label for="ipcaCDI">Inflação Anual / IPCA (%) - Opcional:</label>
+        <input type="number" id="ipcaCDI" placeholder="Ex: 4.5" step="0.1">
       </div>
       <div class="form-group">
         <label for="periodoAnosCDI">Período (em anos):</label>
         <input type="number" id="periodoAnosCDI" placeholder="Ex: 5">
       </div>
       <button id="btnCalcularCDI">Calcular Rendimento CDI</button>
-      <div id="resultadoCDI" class="resultado"></div>
+      
+      <div id="resultadoCDI" class="resultado">
+        <div class="textos-resultado"></div>
+        <canvas id="graficoCDI" class="grafico"></canvas>
+      </div>
     </div>
 
   </div>
