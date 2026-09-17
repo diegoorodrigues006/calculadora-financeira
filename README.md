@@ -38,8 +38,8 @@ calculadora-financeira/
 │
 ├── public/
 │   └── assets/
-│       ├── momo.jpg
-│       └── financas-calculadora-dark.jpg
+│       ├── black-theme.jpg
+│       └── 
 │
 ├── src/
 │   ├── css/
@@ -50,13 +50,14 @@ calculadora-financeira/
 ├── index.html
 └── README.md
 
+ ```
 ## 🖥️ Como Executar o Projeto Localmente
 
 Basta ter um navegador web moderno (Chrome, Firefox, Edge, Safari).
 
 1. Clone o repositório para a sua máquina:
    ```bash
-   git clone [https://github.com/SEU-USUARIO/nome-do-repositorio.git](https://github.com/SEU-USUARIO/nome-do-repositorio.git)
+   git clone https://github.com/diegoorodrigues006/calculadora-financeira
 
 👨‍💻 Autor
 
