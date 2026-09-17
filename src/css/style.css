@@ -1,5 +1,4 @@
 :root {
-  /* Imagem para o Modo Claro */
   --bg-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1920&auto=format&fit=crop');
   --bg-color-overlay: rgba(244, 247, 246, 0.88);
 
@@ -15,9 +14,8 @@
 }
 
 body.dark-mode {
-  /* Caminho corrigido com '../../' para voltar de src/css/ até a raiz e entrar em public/assets/ */
-  --bg-image: url('../../public/assets/momo.jpg');
-  --bg-color-overlay: rgba(18, 18, 18, 0.80); /* Deixei levemente mais transparente (0.80) para a imagem aparecer bem */
+  --bg-image: url('../../public/assets/black-theme.jpg');
+  --bg-color-overlay: rgba(18, 18, 18, 0.80);
 
   --bg-container: #1e1e1e;
   --text-main: #f1f1f1;
@@ -39,7 +37,6 @@ body.dark-mode {
 }
 
 body {
-  /* Mistura a cor translúcida com a imagem de fundo de forma válida no CSS */
   background-image: linear-gradient(var(--bg-color-overlay), var(--bg-color-overlay)), var(--bg-image);
   background-size: cover;
   background-position: center;
@@ -151,8 +148,6 @@ button.btn-primario { flex: 2; background-color: var(--primary); color: white; }
 button.btn-primario:hover { background-color: var(--primary-hover); }
 button.btn-limpar { flex: 1; background-color: transparent; border: 1px solid var(--border-color); color: var(--text-muted); }
 button.btn-limpar:hover { background-color: var(--border-tabs); }
-button.btn-pdf { background-color: #e74c3c; color: white; width: 100%; margin-top: 15px; }
-button.btn-pdf:hover { background-color: #c0392b; }
 
 /* Resultados & Gráficos */
 .resultado { margin-top: 20px; padding: 15px; background-color: var(--result-bg); border-left: 5px solid var(--primary); border-radius: 4px; display: none; }

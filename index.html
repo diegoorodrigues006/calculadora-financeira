@@ -6,9 +6,8 @@
   <title>Calculadora Financeira</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><path d='M10 24c0-3 3-6 10-6h24c7 0 10 3 10 6v16c0 3-3 6-10 6H20c-7 0-10-3-10-6V24z' fill='%232761ae'/><text x='23' y='40' font-size='24' fill='%23fff' font-family='Arial' font-weight='bold'>$</text><path d='M2 26c-3-1-5-5-1-8 3-3 7-5 9-4-2 3-5 8-8 12z' fill='%2395a5a6'/><path d='M62 26c3-1 5-5 1-8-3-3-7-5-9-4 2 3 5 8 8 12z' fill='%2395a5a6'/></svg>">
   <link rel="stylesheet" href="src/css/style.css">
-  <!-- Bibliotecas Externas -->
+  <!-- Chart.js para os gráficos -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
   
@@ -66,7 +65,6 @@
         <div id="resultadoJuros" class="resultado">
           <div class="textos-resultado"></div>
           <canvas id="graficoJuros" class="grafico"></canvas>
-          <button class="btn-pdf">Baixar PDF</button>
         </div>
       </div>
 
@@ -92,7 +90,6 @@
         </div>
         <div id="resultadoFinanciamento" class="resultado">
           <div class="textos-resultado"></div>
-          <button class="btn-pdf">Baixar PDF</button>
         </div>
       </div>
 
@@ -128,7 +125,6 @@
         <div id="resultadoSelic" class="resultado">
           <div class="textos-resultado"></div>
           <canvas id="graficoSelic" class="grafico"></canvas>
-          <button class="btn-pdf">Baixar PDF</button>
         </div>
       </div>
 
@@ -168,7 +164,6 @@
         <div id="resultadoCDI" class="resultado">
           <div class="textos-resultado"></div>
           <canvas id="graficoCDI" class="grafico"></canvas>
-          <button class="btn-pdf">Baixar PDF</button>
         </div>
       </div>
     </div>

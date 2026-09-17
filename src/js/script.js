@@ -57,27 +57,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   renderizarHistorico();
 
-  // --- GERAÇÃO DE PDF ---
-  document.querySelectorAll('.btn-pdf').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const resultadoDiv = e.target.closest('.resultado');
-      const btnElement = e.target;
-      btnElement.style.display = 'none'; 
-      
-      const opt = {
-        margin: 10,
-        filename: 'relatorio-calculo.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-      };
-
-      html2pdf().set(opt).from(resultadoDiv).save().then(() => {
-        btnElement.style.display = 'block'; 
-      });
-    });
-  });
-
   // --- CONTROLE DAS ABAS ---
   const tabButtons = document.querySelectorAll('.tab-btn');
   const tabContents = document.querySelectorAll('.tab-content');
@@ -309,7 +288,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Entrada pelo Teclado
   document.addEventListener('keydown', (e) => {
-    // Evita conflito se o usuário estiver digitando nos inputs principais da calculadora financeira
     if (document.activeElement.tagName === 'INPUT' && document.activeElement.id !== 'calcDisplay') {
       return;
     }
