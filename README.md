@@ -38,8 +38,7 @@ calculadora-financeira/
 │
 ├── public/
 │   └── assets/
-│       ├── black-theme.jpg
-│       └── 
+│       └── black-theme.jpg
 │
 ├── src/
 │   ├── css/
